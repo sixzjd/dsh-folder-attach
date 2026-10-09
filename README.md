@@ -44,11 +44,19 @@ osascript -e 'choose folder' -e 'POSIX path of selectedFolder'
 
 ## 安装
 
+**从 GitHub 安装（当前可用）**
+
+```bash
+dsh plugin --profile web add github:sixzjd/dsh-folder-attach
+```
+
+**从 npm 安装（发布后）**
+
 ```bash
 dsh plugin --profile web add dsh-folder-attach
 ```
 
-或在侧边栏 **插件 → 添加插件** 输入 `dsh-folder-attach`。装完刷新浏览器页面。
+也可以在侧边栏 **插件 → 添加插件** 里填上面的地址。装完刷新浏览器页面。
 
 <details>
 <summary>从源码安装</summary>
@@ -56,7 +64,7 @@ dsh plugin --profile web add dsh-folder-attach
 ```bash
 git clone https://github.com/sixzjd/dsh-folder-attach.git
 cd ~/.dsh/profiles/web        # 或你的 profile 目录
-dsh plugin --profile web add /path/to/dsh-folder-attach
+dsh plugin --profile web add ./dsh-folder-attach
 ```
 
 </details>

@@ -44,11 +44,19 @@ What gets inserted is a **standard `@path` mention**, equivalent to what the des
 
 ## Install
 
+**From GitHub (works today)**
+
+```bash
+dsh plugin --profile web add github:sixzjd/dsh-folder-attach
+```
+
+**From npm (once published)**
+
 ```bash
 dsh plugin --profile web add dsh-folder-attach
 ```
 
-Or type `dsh-folder-attach` into **Plugins → Add** in the sidebar. Reload the browser page afterwards.
+You can also paste either form into **Plugins → Add** in the sidebar. Reload the browser page afterwards.
 
 <details>
 <summary>Install from source</summary>
@@ -56,7 +64,7 @@ Or type `dsh-folder-attach` into **Plugins → Add** in the sidebar. Reload the 
 ```bash
 git clone https://github.com/sixzjd/dsh-folder-attach.git
 cd ~/.dsh/profiles/web        # or your profile directory
-dsh plugin --profile web add /path/to/dsh-folder-attach
+dsh plugin --profile web add ./dsh-folder-attach
 ```
 
 </details>
