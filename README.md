@@ -1,5 +1,8 @@
 # dsh-folder-attach
 
+[![test](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml/badge.svg)](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 在 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的 **Web 浏览器界面**里，为对话输入框添加文件夹引用。
 
 > [English](README.en.md) · 需要 dsh `>= 0.2.0-rc.2`

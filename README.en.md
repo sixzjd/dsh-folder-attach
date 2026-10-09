@@ -1,5 +1,8 @@
 # dsh-folder-attach
 
+[![test](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml/badge.svg)](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Add folder references to the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) **web browser** composer.
 
 > [中文](README.md) · requires dsh `>= 0.2.0-rc.2`
