@@ -133,6 +133,10 @@ const keys = [...listeners.keys()].sort();
 console.log('listeners:', keys.join(', '));
 assert.deepStrictEqual(keys, ['drop:capture', 'paste:capture']);
 
+async function settle() {
+  for (let i = 0; i < 12; i += 1) await new Promise((r) => setTimeout(r, 0));
+}
+
 async function main() {
   const face = injectFaceFactory('s1');
   const actions = {
@@ -179,6 +183,66 @@ async function main() {
 
   // Ambiguous basename resolves to the shallowest match, never a coin flip.
   assert.deepStrictEqual(inserted, ['@assets/ '], `expected shallowest match, got ${JSON.stringify(inserted)}`);
+
+  // --- image pre-check mirrors the composer's own --------------------------
+  const limits = { mediaTypes: ['image/png'], maxImagesPerMessage: 20, maxImageBytes: 20 * 1024 * 1024, maxMessageImageBytes: 100 * 1024 * 1024 };
+  const img = (n) => ({ name: `i${n}.png`, size: 1024, lastModified: 1, type: 'image/png' });
+  const dropWith = (files, folders) => {
+    inserted.length = 0; uploaded.length = 0; sandbox.__dispatched.length = 0;
+    const items = [...folders, ...files].map((f) => ({
+      kind: 'file', getAsFile: () => f,
+      webkitGetAsEntry: () => ({ isDirectory: folders.includes(f) }),
+    }));
+    const ev = {
+      type: 'drop', target: null,
+      preventDefault() { this.prevented = true; },
+      stopPropagation() { this.stopped = true; },
+      dataTransfer: { types: ['Files'], files: [...folders, ...files], items },
+    };
+    listeners.get('drop:capture')(ev);
+    return ev;
+  };
+  const noticeText = () => (face.noticeStore.snapshot('s1') || {}).text;
+
+  // Limits published by the mounted composer (the component's useProjection seat).
+  face.publishLimits('s1', limits);
+
+  // A mixed drop over the image cap is refused WHOLE: nothing uploads, nothing
+  // inserts, but the gesture is still claimed and the overlay still cleared.
+  const tooMany = [...Array(21)].map((_x, i) => img(i));
+  const overEvent = dropWith(tooMany, [folder]);
+  assert.ok(overEvent.prevented, 'an over-cap mixed drop is still ours to refuse');
+  assert.deepStrictEqual(sandbox.__dispatched, ['dragend'], 'a refused drop must still clear the overlay');
+  await settle();
+  assert.deepStrictEqual(inserted, [], 'refused drop must insert nothing');
+  assert.deepStrictEqual(uploaded, [], 'refused drop must upload nothing');
+  assert.match(noticeText(), /image\.tooMany/, 'refusal must name the image limit');
+
+  // Oversized single image, and oversized aggregate, are both caught.
+  face.publishLimits('s1', { ...limits, maxImageBytes: 10 });
+  dropWith([{ name: 'big.png', size: 999, lastModified: 1, type: 'image/png' }], [folder]);
+  await settle();
+  assert.match(noticeText(), /image\.fileTooLarge/);
+  face.publishLimits('s1', { ...limits, maxMessageImageBytes: 10 });
+  dropWith([img(1), img(2)], [folder]);
+  await settle();
+  assert.match(noticeText(), /image\.totalTooLarge/);
+
+  // Under the cap it proceeds normally: folder resolves, image uploads.
+  face.publishLimits('s1', limits);
+  inserted.length = 0; uploaded.length = 0;
+  dropWith([img(1)], [folder]);
+  await settle();
+  assert.deepStrictEqual(inserted, ['@assets/ '], 'an in-limit mixed drop must still insert the folder');
+  assert.deepStrictEqual(uploaded, ['i1.png'], 'an in-limit mixed drop must still upload the image');
+
+  // Limits unknown means "cannot judge", NOT "unlimited": the Host still
+  // enforces, so the drop proceeds rather than being silently refused.
+  face.publishLimits('s1', undefined);
+  inserted.length = 0; uploaded.length = 0;
+  dropWith(tooMany, [folder]);
+  await settle();
+  assert.strictEqual(uploaded.length, 21, 'absent limits must not block the drop');
 
   // --- notices -------------------------------------------------------------
   face.noticeStore.publish('s1', 'ok', 'same');

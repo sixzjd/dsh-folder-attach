@@ -112,6 +112,7 @@ Only extension points the official docs declare — no patched or monkeypatched 
 - A drop yields a plain `@dir/` **text mention**, not the folder chip the desktop app renders — a chip needs a real path. Functionally equivalent, visually different.
 - The indexed lookup is bounded, so in extreme cases a same-named folder may be absent from the candidates and is then treated as unresolved.
 - If your profile resolves the directory picker to the `browse` backend (remote / SSH access), the OS dialog is unavailable and `pick` refuses with a message; drag resolution still works.
+- On a mixed drop (folder + images) the plugin mirrors the composer's image count/size pre-check, but **counts only the images in that drop**: already-attached images are not readable through any public face. The Host's `validateImageBatch` still enforces the full per-message limit, so this is an earlier and looser notice, not a hole.
 - Plugin-page display names require `locale/en.json` to be present.
 
 ## Why it survives dsh updates
