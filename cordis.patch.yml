@@ -1,0 +1,6 @@
+# Profile layer this bundle contributes while it is enabled. Declared here
+# rather than in the user's own cordis.patch.yml so the plugin page can switch
+# the whole feature with one toggle and never edit their overrides.
+- insert:
+    - id: ui-folder-attach
+      name: dsh-folder-attach

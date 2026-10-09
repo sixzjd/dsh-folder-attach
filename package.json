@@ -1,0 +1,68 @@
+{
+  "name": "dsh-folder-attach",
+  "version": "0.1.0",
+  "description": "Add folders to the DeepSeek Harness web composer: host folder dialog, /folder command, and folder drag/paste resolved into @path mentions.",
+  "keywords": [
+    "dsh-plugin",
+    "dsh-bundle",
+    "deepseek-harness",
+    "deepseek",
+    "composer",
+    "attachment",
+    "folder",
+    "directory"
+  ],
+  "license": "MIT",
+  "author": "sixzjd",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./locale/*.json": "./locale/*.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "locale",
+    "assets",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "LICENSE"
+  ],
+  "icon": "./assets/icon.svg",
+  "engines": {
+    "dsh": ">=0.2.0-rc.2"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-commands",
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-api-session-controller"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.0.4"
+  },
+  "scripts": {
+    "test": "node tests/smoke.cjs && node tests/paths.cjs",
+    "check": "node --check lib/client.js && node --check lib/index.js && npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sixzjd/dsh-folder-attach.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sixzjd/dsh-folder-attach/issues"
+  },
+  "homepage": "https://github.com/sixzjd/dsh-folder-attach#readme"
+}

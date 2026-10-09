@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Folder Attach",
+    "description": "Add folders to the web composer: host folder dialog, /folder command, and folder drag/paste resolved into @path mentions."
+  }
+}
