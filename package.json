@@ -34,6 +34,7 @@
   ],
   "icon": "./assets/icon.svg",
   "engines": {
+    "node": ">=20",
     "dsh": ">=0.2.0-rc.2"
   },
   "dsh": {
@@ -48,6 +49,11 @@
         "@deepseek-ai/dsh-api-remotes",
         "@deepseek-ai/dsh-api-session-controller"
       ]
+    },
+    "compatibility": {
+      "dshReleases": {
+        "0.2.0-rc.2": "compatible"
+      }
     }
   },
   "peerDependencies": {
