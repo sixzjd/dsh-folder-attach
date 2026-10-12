@@ -3,7 +3,8 @@
 [![test](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml/badge.svg)](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-在 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的 **Web 浏览器界面**里，为对话输入框添加文件夹引用。
+DSH 网页版拖入文件夹会被拒绝：「只有桌面端支持添加文件夹，浏览器里请添加单个文件」。
+这个插件让它在**纯浏览器**里可用 —— 拖文件夹、`/folder`、主机文件夹选择框，都插入标准 `@路径` 引用。
 
 > [English](README.en.md) · 需要 dsh `>= 0.2.0-rc.2`
 
@@ -47,16 +48,14 @@ osascript -e 'choose folder' -e 'POSIX path of selectedFolder'
 
 ## 安装
 
-**从 GitHub 安装（当前可用）**
+```bash
+dsh plugin --profile web add dsh-folder-attach
+```
+
+也可以从 GitHub 装（同一份源码，可钉到某个 tag）：
 
 ```bash
 dsh plugin --profile web add github:sixzjd/dsh-folder-attach
-```
-
-**从 npm 安装（发布后）**
-
-```bash
-dsh plugin --profile web add dsh-folder-attach
 ```
 
 也可以在侧边栏 **插件 → 添加插件** 里填上面的地址。装完刷新浏览器页面。

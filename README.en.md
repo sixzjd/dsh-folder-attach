@@ -3,7 +3,8 @@
 [![test](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml/badge.svg)](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Add folder references to the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) **web browser** composer.
+Drag a folder into the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) web composer and it refuses: "folders can only be added in the desktop app".
+This plugin makes it work in a **plain browser** — folder drag, `/folder`, and a host folder dialog, all inserting standard `@path` references.
 
 > [中文](README.md) · requires dsh `>= 0.2.0-rc.2`
 
@@ -47,16 +48,14 @@ What gets inserted is a **standard `@path` mention**, equivalent to what the des
 
 ## Install
 
-**From GitHub (works today)**
-
-```bash
-dsh plugin --profile web add github:sixzjd/dsh-folder-attach
-```
-
-**From npm (once published)**
-
 ```bash
 dsh plugin --profile web add dsh-folder-attach
+```
+
+Or pin it to a tag straight from GitHub (same source):
+
+```bash
+dsh plugin --profile web add github:sixzjd/dsh-folder-attach#v0.1.4
 ```
 
 You can also paste either form into **Plugins → Add** in the sidebar. Reload the browser page afterwards.
