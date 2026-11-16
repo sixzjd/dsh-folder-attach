@@ -4,7 +4,9 @@
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Drag a folder into the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) web composer and it refuses: "folders can only be added in the desktop app".
-This plugin makes it work in a **plain browser** — folder drag, `/folder`, and a host folder dialog, all inserting standard `@path` references.
+This plugin adds folder drag, `/folder`, and a host folder dialog, inserting standard `@path` references.
+
+**It works in a plain browser and in the desktop app alike** — there is no separate desktop-only client here. What that message calls "desktop" is really Electron's injected `__DSH_HOST_PATHS__` path bridge; this plugin supplies an alternative path source for environments without that bridge. With the bridge present (Electron) it prefers the real dropped path; without it (plain browser) it falls back to a host dialog or name resolution.
 
 > [中文](README.md) · requires dsh `>= 0.2.0-rc.2`
 
@@ -18,9 +20,9 @@ if (bridge === void 0 && directory) return t("attachment.directoryDesktopOnly");
 // → "Folders can only be added in the desktop app; add individual files in the browser"
 ```
 
-A browser never reveals the absolute path of a dropped folder, so only the desktop shell (Electron, which injects `__DSH_HOST_PATHS__`) can map a `File` back to a real path. And `@deepseek-ai/dsh` **ships no desktop app today**: `dsh web` accepts only `--host/--port/--no-open/--trusted-host`, and nothing in the published bundle ever writes that global.
+A browser never reveals the absolute path of a dropped folder, so only Electron (which injects `__DSH_HOST_PATHS__`) can map a `File` back to a real path. This plugin doesn't work around that check. It **changes where the answer comes from**: ask the host, not the browser.
 
-This plugin doesn't work around that check. It **changes where the answer comes from**: ask the host, not the browser.
+The web GUI is the same interface in both cases — inside the desktop app it runs on an embedded Node host, and `dsh web` runs on a standalone host. "Desktop vs browser" here is only about whether that path bridge exists, not about two different clients.
 
 ## How it works
 
@@ -44,7 +46,9 @@ Dropped folders are resolved by name through `fileReferences/list` — the same 
 | `/folder` command | Same |
 | Drag / paste a folder | Resolves the name inside the workspace and inserts `@dir/`; non-folder members keep the normal upload path |
 
-What gets inserted is a **standard `@path` mention**, equivalent to what the desktop app produces: workspace-relative inside the workspace, absolute outside it, quoted when the path contains whitespace.
+What gets inserted is a **standard `@path` mention**, the same form the `@` completion menu produces: workspace-relative inside the workspace, absolute outside it, quoted when the path contains whitespace.
+
+DSH only recognizes a reference when `@` sits at the start of a line or after whitespace. When the composer already ends in a non-whitespace character, the plugin inserts a leading space first so the mention renders as a blue folder reference instead of plain text.
 
 ## Install
 
@@ -55,7 +59,7 @@ dsh plugin --profile web add dsh-folder-attach
 Or pin it to a tag straight from GitHub (same source):
 
 ```bash
-dsh plugin --profile web add github:sixzjd/dsh-folder-attach#v0.1.4
+dsh plugin --profile web add github:sixzjd/dsh-folder-attach#v0.1.5
 ```
 
 You can also paste either form into **Plugins → Add** in the sidebar. Reload the browser page afterwards.
@@ -107,8 +111,8 @@ Only extension points the official docs declare — no patched or monkeypatched 
 
 ## Known limitations
 
-- **Dropped/pasted** folders can only be resolved by name inside the workspace. The browser hides their paths and that is unavoidable; when a name cannot be located the plugin says so and points at the dialog rather than guessing a path.
-- A drop yields a plain `@dir/` **text mention**, not the folder chip the desktop app renders — a chip needs a real path. Functionally equivalent, visually different.
+- **Without the path bridge** (plain browser), dropped/pasted folders can only be resolved by name inside the workspace. With the bridge (Electron), the real path of the dropped item is used, which is more precise. When a name cannot be located the plugin says so and points at the dialog rather than guessing a path.
+- A drop yields a standard `@dir/` mention, rendered as a folder reference in both the composer and sent messages. DSH folder references are **intentionally non-clickable / non-navigable** — the same is true for folders picked from the official `@` menu; only file references open a preview. This plugin does not alter upstream rendering, so behavior stays consistent.
 - The indexed lookup is bounded, so in extreme cases a same-named folder may be absent from the candidates and is then treated as unresolved.
 - If your profile resolves the directory picker to the `browse` backend (remote / SSH access), the OS dialog is unavailable and `pick` refuses with a message; drag resolution still works.
 - On a mixed drop (folder + images) the plugin mirrors the composer's image count/size pre-check, but **counts only the images in that drop**: already-attached images are not readable through any public face. The Host's `validateImageBatch` still enforces the full per-message limit, so this is an earlier and looser notice, not a hole.
