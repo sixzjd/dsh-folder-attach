@@ -1,5 +1,6 @@
 # dsh-folder-attach
 
+[![Awesome DSH Plugin](https://awesome-dsh-plugin.com/badge.svg)](https://awesome-dsh-plugin.com) [![npm version](https://img.shields.io/npm/v/dsh-folder-attach)](https://www.npmjs.com/package/dsh-folder-attach) [![npm downloads](https://img.shields.io/npm/dm/dsh-folder-attach)](https://www.npmjs.com/package/dsh-folder-attach)
 [![test](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml/badge.svg)](https://github.com/sixzjd/dsh-folder-attach/actions/workflows/test.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
