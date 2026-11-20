@@ -1,6 +1,6 @@
 {
   "name": "dsh-folder-attach",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Drag folders into the DeepSeek Harness web composer instead of hitting 'only the desktop app supports folders'. Adds a host folder dialog, /folder, and drag/paste into @path mentions. Works in both the browser and the desktop app.",
   "keywords": [
     "dsh-plugin",
@@ -62,7 +62,7 @@
     "@deepseek-ai/cordis": "~4.0.4"
   },
   "scripts": {
-    "test": "node tests/smoke.cjs && node tests/paths.cjs && node tests/leading-space.test.cjs",
+    "test": "node tests/smoke.cjs && node tests/paths.cjs && node tests/leading-space.test.cjs && node tests/drop-resolution.test.cjs",
     "check": "node --check lib/client.js && node --check lib/index.js && npm test"
   },
   "repository": {

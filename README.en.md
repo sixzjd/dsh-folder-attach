@@ -59,7 +59,7 @@ dsh plugin --profile web add dsh-folder-attach
 Or pin it to a tag straight from GitHub (same source):
 
 ```bash
-dsh plugin --profile web add github:sixzjd/dsh-folder-attach#v0.1.5
+dsh plugin --profile web add github:sixzjd/dsh-folder-attach#v0.1.6
 ```
 
 You can also paste either form into **Plugins → Add** in the sidebar. Reload the browser page afterwards.
